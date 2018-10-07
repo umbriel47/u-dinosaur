@@ -1,0 +1,12 @@
+#
+name: init
+prologue: 欢迎来到恐龙世界
+options:
+出去碰碰运气#walk_around
+继续睡觉#sleep
+#
+name: walk_around
+prologue: 世界这么大
+options:
+抓恐龙#catch_pet
+回家#init
