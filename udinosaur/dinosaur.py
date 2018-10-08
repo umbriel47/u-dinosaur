@@ -3,9 +3,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from handlers import users
-from world import World
-from player import Player
+from udinosaur.handlers import users
+from udinosaur.world import World
+from udinosaur.player import Player
 
 def main():
     # login the player
@@ -13,6 +13,7 @@ def main():
     # init the world, if the player's save file exist, load it. Otherwise
     # start a new one
     world = World(player)
+    handler = 'init'
     while True:
         handler = world.run(handler)
 

@@ -5,4 +5,4 @@
 def save(world):
     """ save the world's status
     """
-    pass
+    world.save()

@@ -6,4 +6,4 @@ class Player(object):
     """ the player class
     """
     def __init__(self):
-        pass
+        self.name = "test"

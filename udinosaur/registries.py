@@ -2,9 +2,9 @@
 """
 # -*- coding: utf-8 -*-
 
-EVENTS = [
+import json
 
-]
+EVENTS = json.load(open("./events/events.json", 'r'))
 
 ENTITIES = {
 "dinosaurs": ["BaWangLong", "WanLong"],
@@ -12,18 +12,14 @@ ENTITIES = {
 }
 
 COMMANDS = {
-
+"save": ""
 }
 
 LOCATIONS = {
-[
-    {
-    name: "asteroid",
-    type: "land"
-    },
-    {
-    name: "wetland",
-    type: "lake"
-    }
-]
+"home": {
+    "type": "land"
+},
+"wetland": {
+    "type": "lake"
+}
 }

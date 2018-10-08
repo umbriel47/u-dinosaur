@@ -1,0 +1,1 @@
+{"init": {"prologue": "\u6b22\u8fce\u6765\u5230\u6050\u9f99\u4e16\u754c", "options": ["\u51fa\u53bb\u78b0\u78b0\u8fd0\u6c14@walk_around", "\u7ee7\u7eed\u7761\u89c9@sleep"]}, "walk_around": {"prologue": "\u4e16\u754c\u8fd9\u4e48\u5927", "options": ["\u6293\u6050\u9f99@catch_pet", "\u56de\u5bb6@init"]}}
