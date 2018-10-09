@@ -2,6 +2,7 @@
 """
 # -*- coding: utf-8 -*-
 
+import os
 import joblib
 
 from udinosaur.registries import EVENTS, COMMANDS
@@ -14,7 +15,13 @@ class World(object):
     def __init__(self, player):
         self.player = player
         self.DATA_PATH = "./data/"
+        self.handler = "init"
         # check if the record exist, if yes, load it
+        if os.path.exists(self.DATA_PATH+player.name+".joblib"):
+            self.load()
+
+    def get_handler(self):
+        return self.handler
 
     def run(self, handler):
         # get the event content
@@ -51,6 +58,8 @@ class World(object):
         print("Data for %s saved successfully" % self.player.name)
 
     def load(self):
+        """load the record to the world
+        """
         file_name = self.player.name + ".joblib"
         self.player = joblib.load(self.DATA_PATH+file_name)
         file_name = self.player.name + ".meta"

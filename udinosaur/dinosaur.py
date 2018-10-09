@@ -13,7 +13,7 @@ def main():
     # init the world, if the player's save file exist, load it. Otherwise
     # start a new one
     world = World(player)
-    handler = 'init'
+    handler = world.get_handler()
     while True:
         handler = world.run(handler)
 
