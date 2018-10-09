@@ -12,7 +12,8 @@ ENTITIES = {
 }
 
 COMMANDS = {
-"save": ""
+"save": "commands.save",
+"load": "commands.load"
 }
 
 LOCATIONS = {
