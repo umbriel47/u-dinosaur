@@ -1,11 +1,18 @@
 name: init
-prologue: 欢迎来到恐龙世界
+prologue: 一天过去了，你一觉醒来，发现自己身处在一个恐龙的世界里
 options:
 出去碰碰运气@walk_around
-继续睡觉@sleep
+看看我的宠物@show_pets
+继续睡觉@init
 #
 name: walk_around
-prologue: 世界这么大
+prologue: 你看到一片原始森林，里面好像有什么东西在动。但是巨大的叶子挡住了你的视线。在一个新的世界里，如果可以找到一个伙伴就好了。
 options:
-抓恐龙@catch_pet
-回家@init
+找一个宠物伙伴@catch_pet
+回家继续睡觉去@init
+#
+name: catch_pet
+prologue: 前方黑影闪动，你看到了一个轮廓。你蹑手蹑脚走过去，发现这是一只年幼的恐龙。你小心翼翼，三心二意，一步三回头地走到恐龙背后，紧紧抱住了它。
+options:
+带回家，然后好好睡一觉@init
+放走好了，还是回家睡觉去@init

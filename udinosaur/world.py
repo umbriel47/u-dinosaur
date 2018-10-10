@@ -8,6 +8,7 @@ import joblib
 from udinosaur.registries import EVENTS, COMMANDS
 from udinosaur.handlers.events import *
 from udinosaur.handlers import commands
+from udinosaur.aux import print_sep
 
 class World(object):
     """The definition of the game's world"""
@@ -18,7 +19,13 @@ class World(object):
         self.handler = "init"
         # check if the record exist, if yes, load it
         if os.path.exists(self.DATA_PATH+player.name+".joblib"):
-            self.load()
+            continu = input("用户已经存在，继续？（y/n 选择n将开始新的游戏并删除原记录)：")
+            if continu == 'y':
+                self.load()
+            elif continu == 'n':
+                print("你选择了开始一个新游戏")
+            print("欢迎%s来到恐龙世界" % self.player.name)
+            print_sep()
 
     def get_handler(self):
         return self.handler
@@ -38,17 +45,21 @@ class World(object):
         if self._not_valid_selection(selection, options):
             return self.handler
         # return the new handler
-        return eval(handler)(selection, options)
+        sel = int(selection)
+        opt = options[sel].split('@')[-1]
+        return eval(handler)(self, sel, opt)
 
     def _not_valid_selection(self, selection, options):
         if selection in COMMANDS:
-            comm = COMMANDS[selection]
+            comm = COMMANDS[selection].split("@")[-1]
             eval(comm)(self)
             return True
         return False
 
 
     def save(self):
+        """ save the current world to a joblib file named
+        by the name of the Player"""
         file_name = self.player.name + ".joblib"
         joblib.dump(self.player, self.DATA_PATH+file_name)
         save_meta = dict()
@@ -56,6 +67,7 @@ class World(object):
         file_name = self.player.name + ".meta"
         joblib.dump(save_meta, self.DATA_PATH+file_name)
         print("Data for %s saved successfully" % self.player.name)
+        print_sep()
 
     def load(self):
         """load the record to the world
@@ -65,6 +77,7 @@ class World(object):
         file_name = self.player.name + ".meta"
         self.handler = joblib.load(self.DATA_PATH+file_name)['handler']
         print("Data for %s loaded successfully" % self.player.name)
+        print_sep()
 
     def _check_status(self):
         """ check if the record already exist

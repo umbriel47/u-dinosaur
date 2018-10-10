@@ -26,6 +26,11 @@ def update_events_json(script):
         events[name]["options"] = options
     json.dump(events, open(_json_file, 'w'))
 
+def print_sep(sep='-', repeat=10):
+    """ print a separation symbol for the display
+    """
+    print(sep*repeat)
+
 
 if __name__ == '__main__':
     update_events_json('./events/script.evt')
