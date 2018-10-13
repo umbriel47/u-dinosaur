@@ -18,6 +18,7 @@ class World(object):
         self.DATA_PATH = "./data/"
         self.handler = "init"
         self.msg = ""
+        self.event = dict()
         # check if the record exist, if yes, load it
         if os.path.exists(self.DATA_PATH+player.name+".joblib"):
             continu = input("用户已经存在，继续？（y/n 选择n将开始新的游戏并删除原记录)：")
@@ -31,32 +32,35 @@ class World(object):
     def get_handler(self):
         return self.handler
 
-    def run(self, handler):
-        # get the event content
-        event = EVENTS[handler]
-        # print the prologue
-        print(event['prologue'])
-        # print the options
-        options = event['options']
+    def run(self):
+        self.get_event()
+        self._display()
+        sel = input("请输入你的选择：")
+        self.process_selection(sel)
+
+    def process_handler(self, handler, sel):
+        return eval(handler)(self, sel)
+
+    def get_event(self):
+        self.event = EVENTS[self.handler]
+
+    def process_selection(self, sel):
+        options = self.event['options']
+        if self._not_valid_selection(sel, options):
+            return self.handler
+        sel = int(sel)
+        handler = self.handler
+        self.handler = options[sel].split('@')[-1]
+        self.msg = eval(handler)(self, sel)
+
+    def _display(self):
+        if self.msg != "":
+            print_sep()
+            print(self.msg)
+        print(self.event["prologue"])
+        options = self.event['options']
         for i in range(len(options)):
             print("%d, %s" % (i, options[i]))
-        self.handler = handler
-        selection = input("请输入你的选择：")
-        # check if the selection is not a valid one or a command
-        if self._not_valid_selection(selection, options):
-            return self.handler
-        # return the new handler
-        sel = int(selection)
-        opt = options[sel].split('@')[-1]
-        new_handler = eval(handler)(self, sel, opt)
-        return new_handler
-
-    def show_event(self, handler):
-        pass
-
-    def process_selection(self, handler):
-        pass
-
 
     def _not_valid_selection(self, selection, options):
         if selection in COMMANDS:

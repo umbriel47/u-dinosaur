@@ -27,9 +27,10 @@ class Player(object):
                 pet.show()
                 print_sep()
             print_sep()
-            print("总共有%d个宠物，你不再孤独" % counter)
+            msg = "总共有%d个宠物，你不再孤独" % counter
         else:
-            print("你还没有找到恐龙宠物，加油啊！")
+            msg = "你还没有找到恐龙宠物，加油啊！"
+        return msg
 
     def add_pet(self, pet):
         self.pets.append(pet)
