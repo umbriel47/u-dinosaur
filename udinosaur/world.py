@@ -17,6 +17,7 @@ class World(object):
         self.player = player
         self.DATA_PATH = "./data/"
         self.handler = "init"
+        self.msg = ""
         # check if the record exist, if yes, load it
         if os.path.exists(self.DATA_PATH+player.name+".joblib"):
             continu = input("用户已经存在，继续？（y/n 选择n将开始新的游戏并删除原记录)：")
@@ -47,7 +48,15 @@ class World(object):
         # return the new handler
         sel = int(selection)
         opt = options[sel].split('@')[-1]
-        return eval(handler)(self, sel, opt)
+        new_handler = eval(handler)(self, sel, opt)
+        return new_handler
+
+    def show_event(self, handler):
+        pass
+
+    def process_selection(self, handler):
+        pass
+
 
     def _not_valid_selection(self, selection, options):
         if selection in COMMANDS:
