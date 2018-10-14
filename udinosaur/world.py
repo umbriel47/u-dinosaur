@@ -46,7 +46,8 @@ class World(object):
 
     def process_selection(self, sel):
         options = self.event['options']
-        if self._not_valid_selection(sel, options):
+        not_valid_sel, msg = self._not_valid_selection(sel, options)
+        if not_valid_sel:
             return self.handler
         sel = int(sel)
         handler = self.handler
@@ -66,8 +67,14 @@ class World(object):
         if selection in COMMANDS:
             comm = COMMANDS[selection].split("@")[-1]
             eval(comm)(self)
-            return True
-        return False
+            return True, "COMMAND"
+        try:
+            selection = int(selection)
+        except:
+            return True, "ERROR"
+        if selection not in range(len(options)):
+            return True, "ERROR"
+        return False, "VALID_OPTION"
 
 
     def save(self):
