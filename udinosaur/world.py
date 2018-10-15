@@ -32,7 +32,7 @@ class World(object):
     def get_handler(self):
         return self.handler
 
-    def run(self):
+    def run(self, output=None):
         self.get_event()
         self._display()
         sel = input("请输入你的选择：")
