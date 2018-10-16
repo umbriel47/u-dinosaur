@@ -19,14 +19,16 @@ class World(object):
         self.handler = "init"
         self.msg = ""
         self.event = dict()
+        self.io = "stdio"
         # check if the record exist, if yes, load it
         if os.path.exists(self.DATA_PATH+player.name+".joblib"):
-            continu = input("用户已经存在，继续？（y/n 选择n将开始新的游戏并删除原记录)：")
+            continu = self.read("用户已经存在，继续？（y/n 选择n将开始新的游戏并删除原记录)：")
             if continu == 'y':
                 self.load()
             elif continu == 'n':
-                print("你选择了开始一个新游戏")
-            print("欢迎%s来到恐龙世界" % self.player.name)
+                self.write("你选择了开始一个新游戏")
+            msg = "欢迎%s来到恐龙世界" % self.player.name
+            self.write(msg)
             print_sep()
 
     def get_handler(self):
@@ -57,11 +59,12 @@ class World(object):
     def _display(self):
         if self.msg != "":
             print_sep()
-            print(self.msg)
-        print(self.event["prologue"])
+            self.write(self.msg)
+        self.write(self.event["prologue"])
         options = self.event['options']
         for i in range(len(options)):
-            print("%d, %s" % (i, options[i]))
+            msg = "%d, %s" % (i, options[i])
+            self.write(msg)
 
     def _not_valid_selection(self, selection, options):
         if selection in COMMANDS:
@@ -98,6 +101,20 @@ class World(object):
         self.handler = joblib.load(self.DATA_PATH+file_name)['handler']
         print("Data for %s loaded successfully" % self.player.name)
         print_sep()
+
+
+    def write(self, msg=""):
+        """ write to self.io
+        """
+        if self.io == "stdio":
+            print(msg)
+
+    def read(self, msg=""):
+        """read from self.io
+        """
+        if self.io == "stdio":
+            ret = input(msg)
+        return ret
 
     def _check_status(self):
         """ check if the record already exist

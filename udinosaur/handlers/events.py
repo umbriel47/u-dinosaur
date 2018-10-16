@@ -35,7 +35,7 @@ def catch_pet(world, sel):
             msg = "对方挣扎了一下，跑掉了，只剩下一个模糊的背影和一地灰尘。你决定还是回家睡觉去吧。"
         else:
             type = np.random.choice(ENTITIES["dinosaurs"])
-            nickname = input("你找到了一条"+type+", 给它取个好听的名字吧：")
+            nickname = world.read("你找到了一条"+type+", 给它取个好听的名字吧：")
             dino = Dinosaur(type, nickname)
             world.player.add_pet(dino)
             msg = ""

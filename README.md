@@ -37,10 +37,10 @@ _v1.0_ (current)
 - save/load records (one record for each user)
 - basic system functions, such as exit and help
 - find and capture dinosaurs; view dinosaurs you have
-
+- unify the output/input interface for multiple usages: terminal, telnet.
 
 _v2.0_
 
-TBD
+
 
 ##
