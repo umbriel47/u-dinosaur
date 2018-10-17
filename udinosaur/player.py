@@ -7,8 +7,8 @@ from udinosaur.aux import print_sep
 class Player(object):
     """ the player class
     """
-    def __init__(self):
-        self.name = input("请输入你的姓名：")
+    def __init__(self, name="无名"):
+        self.name = name
         # define player properties
         # this part changes for different games
 

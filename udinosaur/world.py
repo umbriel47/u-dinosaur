@@ -13,13 +13,18 @@ from udinosaur.aux import print_sep
 class World(object):
     """The definition of the game's world"""
 
-    def __init__(self, player):
+    def __init__(self, player, custom_io="stdio", writer=None, reader=None):
         self.player = player
         self.DATA_PATH = "./data/"
         self.handler = "init"
         self.msg = ""
         self.event = dict()
-        self.io = "stdio"
+        # io:
+        # stdio: for terminal
+        # telnet_io: for telnet server
+        self.io = custom_io
+        self.writer = writer
+        self.reader = reader
         # check if the record exist, if yes, load it
         if os.path.exists(self.DATA_PATH+player.name+".joblib"):
             continu = self.read("用户已经存在，继续？（y/n 选择n将开始新的游戏并删除原记录)：")
@@ -108,12 +113,17 @@ class World(object):
         """
         if self.io == "stdio":
             print(msg)
+        if self.io == "telnet_io":
+            self.writer.write(msg)
 
     def read(self, msg=""):
         """read from self.io
         """
         if self.io == "stdio":
             ret = input(msg)
+        if self.io == "telnet_io":
+            self.writer.write(msg)
+            ret = yield from self.reader.read(1)
         return ret
 
     def _check_status(self):
