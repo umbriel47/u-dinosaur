@@ -21,9 +21,10 @@ class World(object):
         self.event = dict()
         # io:
         # stdio: for terminal
-        # telnet_io: for telnet server
+        # socket_io: for socket server
         self.io = custom_io
         self.writer = writer
+        print(self.writer)
         self.reader = reader
         # check if the record exist, if yes, load it
         if os.path.exists(self.DATA_PATH+player.name+".joblib"):
@@ -42,7 +43,7 @@ class World(object):
     def run(self, output=None):
         self.get_event()
         self._display()
-        sel = input("请输入你的选择：")
+        sel = self.read("请输入你的选择：")
         self.process_selection(sel)
 
     def process_handler(self, handler, sel):
@@ -113,17 +114,17 @@ class World(object):
         """
         if self.io == "stdio":
             print(msg)
-        if self.io == "telnet_io":
-            self.writer.write(msg)
+        if self.io == "socket_io":
+            self.writer.sendall(msg.encode('utf-8'))
 
     def read(self, msg=""):
         """read from self.io
         """
         if self.io == "stdio":
             ret = input(msg)
-        if self.io == "telnet_io":
-            self.writer.write(msg)
-            ret = yield from self.reader.read(1)
+        if self.io == "socket_io":
+            self.writer.sendall(msg.encode('utf-8'))
+            ret = self.writer.recv(1024).decode('utf-8').strip()
         return ret
 
     def _check_status(self):

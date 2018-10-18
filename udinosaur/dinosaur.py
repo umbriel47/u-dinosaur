@@ -4,8 +4,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-import asyncio
-import telnetlib3
+import socket
 
 from udinosaur.handlers import users
 from udinosaur.world import World
@@ -28,34 +27,28 @@ def terminal():
     while True:
         world.run()
 
-#telnet server for the game
-@asyncio.coroutine
-def shell(reader, writer):
-    writer.write('\r\n想要进入奇幻的恐龙世界么? (y/n)')
-    inp = yield from reader.read(1)
-    # start the game
-    if inp == 'y':
-        writer.write(OPENING)
-        print_sep()
-        # login the player
-        writer.write('请输入你的名字：')
-        name = yield from reader.read(1)
-        player = users.login(name)
-        print_sep()
-        # init the world, if the player's save file exist, load it. Otherwise
-        # start a new one
-        world = World(player, writer, reader)
-        while True:
-            world.run()
-    writer.close()
 
-def telnet():
-    loop = asyncio.get_event_loop()
-    coro = telnetlib3.create_server(port=6023, shell=shell)
-    server = loop.run_until_complete(coro)
-    loop.run_until_complete(server.wait_closed())
-
+def socket_server():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind(('', 1911))
+    s.listen(1)
+    conn, addr = s.accept()
+    with conn:
+        welcome_message = '想要进入奇幻的恐龙世界么? (y/n)'
+        conn.sendall(welcome_message.encode('utf-8'))
+        res = conn.recv(1024).decode('utf-8').strip()
+        print(res)
+        if res == 'y':
+            conn.sendall(OPENING.encode('utf-8'))
+            inp = "请输入你的名字："
+            conn.sendall(inp.encode('utf-8'))
+            name = conn.recv(1024).decode('utf-8').strip()
+            player = users.login(name)
+            print(s)
+            world = World(player, "socket_io", s)
+            while True:
+                world.run()
 
 
 if __name__ == "__main__":
-    telnet()
+    socket_server()
