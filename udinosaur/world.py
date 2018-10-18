@@ -115,6 +115,7 @@ class World(object):
         if self.io == "stdio":
             print(msg)
         if self.io == "socket_io":
+            msg = msg + "\n"
             self.writer.sendall(msg.encode('utf-8'))
 
     def read(self, msg=""):
@@ -123,6 +124,7 @@ class World(object):
         if self.io == "stdio":
             ret = input(msg)
         if self.io == "socket_io":
+            msg = msg + "\n"
             self.writer.sendall(msg.encode('utf-8'))
             ret = self.writer.recv(1024).decode('utf-8').strip()
         return ret

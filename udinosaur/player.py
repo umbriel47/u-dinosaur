@@ -19,15 +19,16 @@ class Player(object):
         """ show the list of pets
         """
         if len(self.pets) > 0:
+            msg = ""
             counter = 0
             for pet in self.pets:
                 counter += 1
-                print("pet no.: %d" % counter)
+                msg += "pet no.: %d\n" % counter
                 print_sep()
-                pet.show()
+                msg += pet.show()
                 print_sep()
             print_sep()
-            msg = "总共有%d个宠物，你不再孤独" % counter
+            msg += "总共有%d个宠物，你不再孤独" % counter
         else:
             msg = "你还没有找到恐龙宠物，加油啊！"
         return msg

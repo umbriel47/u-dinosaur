@@ -5,6 +5,7 @@
 
 import os
 import socket
+import argparse
 
 from udinosaur.handlers import users
 from udinosaur.world import World
@@ -30,11 +31,12 @@ def terminal():
 
 def socket_server():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind(('', 1911))
     s.listen(1)
     conn, addr = s.accept()
     with conn:
-        welcome_message = '想要进入奇幻的恐龙世界么? (y/n)'
+        welcome_message = '想要进入奇幻的恐龙世界么? (y/n)\n'
         conn.sendall(welcome_message.encode('utf-8'))
         res = conn.recv(1024).decode('utf-8').strip()
         print(res)
@@ -44,11 +46,21 @@ def socket_server():
             conn.sendall(inp.encode('utf-8'))
             name = conn.recv(1024).decode('utf-8').strip()
             player = users.login(name)
-            print(s)
-            world = World(player, "socket_io", s)
+            world = World(player, "socket_io", conn)
             while True:
                 world.run()
 
 
+
 if __name__ == "__main__":
-    socket_server()
+    parse = argparse.ArgumentParser(description="Please put in the backend \
+                                    that runs the game")
+    parse.add_argument('-b', '--backend', help="Put in the backend mode")
+    args = parse.parse_args()
+    backend = args.backend
+    if backend == "terminal":
+        terminal()
+    elif backend == "socket":
+        socket_server()
+    else:
+        print("Wrong parameters")

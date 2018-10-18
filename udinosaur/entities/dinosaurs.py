@@ -11,5 +11,8 @@ class Dinosaur(object):
         self.nickname = nickname
 
     def show(self):
-        print("昵称："+self.nickname)
-        print("恐龙类型："+self.type)
+        msg = ""
+        msg += "-" * 10 + "\n"
+        msg += "昵称：" + self.nickname + "\n"
+        msg += "恐龙类型：" + self.type + "\n"
+        return msg
